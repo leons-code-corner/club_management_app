@@ -8,6 +8,13 @@ main = Blueprint('main', __name__)
 def index():
     return render_template('index.html')
 
+@main.route('/members')
+def members():
+    # Fetch all members from the database
+    members = Member.query.all()
+    return render_template('members.html', members=members)
+
+
 @main.route('/add_member')
 def add_member():
     # Create a test membership type
