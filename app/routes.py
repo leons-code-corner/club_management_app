@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
+from .forms import MemberForm
 from .models import db, Member, Membership, MembershipType
 from datetime import datetime, timedelta
 
