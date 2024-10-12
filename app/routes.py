@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, flash
 from .forms import MemberForm
 from .models import db, Member, Membership, MembershipType
 from datetime import datetime, timedelta
@@ -16,7 +16,7 @@ def members():
     return render_template('members.html', members=members)
 
 
-@main.route('/add_member')
+@main.route('/add_member', methods=['GET', 'POST'])
 def add_member():
     form = MemberForm()
     if form.validate_on_submit():
@@ -34,6 +34,6 @@ def add_member():
 
         # Flash a success message
         flash(f"Member {new_member.name} added successfully!", "success")
-        return redirect(url_for('main.members'))
+        return redirect(url_for('main.add_member'))
     
     return render_template('add_member.html', form=form)

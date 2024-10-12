@@ -5,6 +5,16 @@
 {% block content %}
     <h1>Add a New Member</h1>
 
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
     <form method="POST">
         {{ form.hidden_tag() }}
         
