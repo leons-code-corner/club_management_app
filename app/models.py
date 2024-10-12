@@ -6,7 +6,7 @@ from datetime import datetime
 class Member(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    #email = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(20), nullable=True)
     address = db.Column(db.String(200), nullable=True)
     join_date = db.Column(db.Date, default=datetime.utcnow)

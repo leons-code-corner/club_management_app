@@ -1,8 +1,8 @@
-"""Initial migration with membership tables
+"""inital migration
 
-Revision ID: 1edcdacc8c48
+Revision ID: b0281eeff28f
 Revises: 
-Create Date: 2024-10-12 20:09:19.332317
+Create Date: 2024-10-12 21:11:52.314824
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1edcdacc8c48'
+revision = 'b0281eeff28f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,8 +25,7 @@ def upgrade():
     sa.Column('phone', sa.String(length=20), nullable=True),
     sa.Column('address', sa.String(length=200), nullable=True),
     sa.Column('join_date', sa.Date(), nullable=True),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('membership_type',
     sa.Column('id', sa.Integer(), nullable=False),
