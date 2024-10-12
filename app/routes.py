@@ -17,38 +17,22 @@ def members():
 
 @main.route('/add_member')
 def add_member():
-    # Create a test membership type
-    basic_type = MembershipType(
-        name="Basic Membership",
-        term_value=1,
-        term_interval="year",
-        extension_value=1,
-        extension_interval="year",
-        price=99.99,
-        price_interval="year"
-    )
-    db.session.add(basic_type)
-    db.session.commit()
+    form = MemberForm()
+    if form.validate_on_submit():
+        # Create a new member instance
+        new_member = Member(
+            name=form.name.data,
+            email=form.email.data,
+            phone=form.phone.data,
+            address=form.address.data,
+            join_date=form.join_date.data
+        )
+        # Add the new member to the database
+        db.session.add(new_member)
+        db.session.commit()
 
-    # Add a new member
-    new_member = Member(
-        name="Jane Doe",
-        email="jane@example.com",
-        phone="987654321",
-        address="456 Club Ave, City",
-        join_date=datetime(2023, 1, 1)
-    )
-    db.session.add(new_member)
-    db.session.commit()
-
-    # Add a membership for this member
-    membership = Membership(
-        membership_start=datetime(2023, 1, 1),
-        membership_end=datetime(2024, 1, 1),
-        fk_member=new_member.id,
-        fk_membership_type=basic_type.id
-    )
-    db.session.add(membership)
-    db.session.commit()
-
-    return redirect(url_for('main.index'))
+        # Flash a success message
+        flash(f"Member {new_member.name} added successfully!", "success")
+        return redirect(url_for('main.members'))
+    
+    return render_template('add_member.html', form=form)
