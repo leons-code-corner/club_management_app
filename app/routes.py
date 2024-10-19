@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from .forms import MemberForm
 from .models import db, Member, Membership, MembershipType
 from datetime import datetime, timedelta
@@ -9,11 +9,20 @@ main = Blueprint('main', __name__)
 def index():
     return render_template('index.html')
 
-@main.route('/members')
+@main.route('/members', methods=['GET', 'POST'])
 def members():
-    # Fetch all members from the database
-    members = Member.query.all()
-    return render_template('members.html', members=members)
+    search_query = request.args.get('search', '')  # Get search query from URL
+    if search_query:
+        # Filter members by name or email if there's a search query
+        members = Member.query.filter(
+            (Member.name.ilike(f'%{search_query}%')) |
+            (Member.email.ilike(f'%{search_query}%'))
+        ).all()
+    else:
+        # If no search query, return all members
+        members = Member.query.all()
+
+    return render_template('members.html', members=members, search_query=search_query)
 
 
 @main.route('/add_member', methods=['GET', 'POST'])

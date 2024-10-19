@@ -3,6 +3,16 @@
 {% block title %}Members List{% endblock %}
 
 {% block content %}
+
+    <!-- Search form -->
+    <form class="mb-4" method="GET" action="{{ url_for('main.members') }}">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search members..." value="{{ search_query }}">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+    
     <h1>Club Members</h1>
     <table class="table table-striped">
         <thead>
