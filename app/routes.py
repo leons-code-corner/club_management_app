@@ -1,16 +1,19 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, Response
-from .forms import MemberForm
-from .models import db, Member, Membership, MembershipType
+from flask_login import login_user, logout_user, login_required
+from .forms import MemberForm, LoginForm
+from .models import db, Member,User, Membership, MembershipType
 from datetime import datetime, timedelta
 import csv, io
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
 @main.route('/members', methods=['GET', 'POST'])
+@login_required
 def members():
     search_query = request.args.get('search', '')  # Get search query from URL
     page = request.args.get('page', 1, type=int)  # Get page number from URL
@@ -44,6 +47,7 @@ def members():
 
 
 @main.route('/add_member', methods=['GET', 'POST'])
+@login_required
 def add_member():
     form = MemberForm()
     if form.validate_on_submit():
@@ -66,6 +70,7 @@ def add_member():
     return render_template('add_member.html', form=form)
 
 @main.route('/edit_member/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_member(id):
     member = Member.query.get_or_404(id)  # Get the member or return 404 if not found
     form = MemberForm(obj=member)  # Pre-fill the form with the member's data
@@ -88,6 +93,7 @@ def edit_member(id):
     return render_template('edit_member.html', form=form, member=member)
 
 @main.route('/delete_member/<int:id>', methods=['POST'])
+@login_required
 def delete_member(id):
     member = Member.query.get_or_404(id)  # Get the member or return 404 if not found
 
@@ -101,6 +107,7 @@ def delete_member(id):
     return redirect(url_for('main.members'))
 
 @main.route('/export_members')
+@login_required
 def export_members():
     # Fetch all members from the database
     members = Member.query.all()
@@ -124,3 +131,27 @@ def export_members():
     response = Response(generate(), mimetype='text/csv')
     response.headers.set('Content-Disposition', 'attachment', filename='members.csv')
     return response
+
+@main.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        # Find the user in the database
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.check_password(form.password.data):
+            # Log in the user
+            login_user(user)
+            flash('Logged in successfully!', 'success')
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('main.index'))
+        else:
+            flash('Invalid username or password', 'danger')
+    
+    return render_template('login.html', form=form)
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('main.login'))
