@@ -19,10 +19,11 @@
     <!-- Export to CSV button -->
     <a href="{{ url_for('main.export_members') }}" class="btn btn-success mb-4" style="position: absolute; right: 20px;">Export to CSV</a>
 
+    <!-- 
     <table class="table table-striped">
         <thead>
             <tr>
-                <!-- Sorting links for the table headers -->
+                Sorting links for the table headers‚
                 <th><a href="{{ url_for('main.members', sort_by='id', sort_order='asc' if sort_order == 'desc' else 'desc', search=search_query) }}">ID</a></th>
                 <th><a href="{{ url_for('main.members', sort_by='name', sort_order='asc' if sort_order == 'desc' else 'desc', search=search_query) }}">Name</a></th>
                 <th><a href="{{ url_for('main.members', sort_by='email', sort_order='asc' if sort_order == 'desc' else 'desc', search=search_query) }}">Email</a></th>
@@ -55,7 +56,45 @@
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table> 
+-->
+
+    <!-- Sorting links for the grid view -->
+    <div class="d-flex justify-content-end mb-3">
+        <div class="btn-group" role="group" aria-label="Sorting options">
+            <a href="{{ url_for('main.members', sort_by='id', sort_order='asc' if sort_order == 'desc' else 'desc', search=search_query) }}" class="btn btn-secondary">Sort by ID</a>
+            <a href="{{ url_for('main.members', sort_by='name', sort_order='asc' if sort_order == 'desc' else 'desc', search=search_query) }}" class="btn btn-secondary">Sort by Name</a>
+            <a href="{{ url_for('main.members', sort_by='email', sort_order='asc' if sort_order == 'desc' else 'desc', search=search_query) }}" class="btn btn-secondary">Sort by Email</a>
+            <a href="{{ url_for('main.members', sort_by='join_date', sort_order='asc' if sort_order == 'desc' else 'desc', search=search_query) }}" class="btn btn-secondary">Sort by Join Date</a>
+        </div>
+    </div>
+
+    <!-- Grid of member tiles -->
+    <div class="row">
+        {% for member in members %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ member.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ member.email }}</h6>
+                        <p class="card-text">
+                            <strong>Phone:</strong> {{ member.phone }}<br>
+                            <strong>Address:</strong> {{ member.address }}<br>
+                            <strong>Join Date:</strong> {{ member.join_date.strftime('%Y-%m-%d') }}
+                        </p>
+                        <a href="{{ url_for('main.edit_member', id=member.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form method="POST" action="{{ url_for('main.delete_member', id=member.id) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this member?');">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">No members found</div>
+            </div>
+        {% endfor %}
+    </div>
 
     <!-- Pagination controls -->
     <nav aria-label="Member list pagination">
