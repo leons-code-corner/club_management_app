@@ -1,25 +1,25 @@
 {% extends "base.html" %}
-
+{% block sidebar %}{% endblock %}
 {% block title %}Login{% endblock %}
-
 {% block content %}
-    <h1>Login</h1>
-
-    <form method="POST">
-        {{ form.hidden_tag() }}
-
-        <div class="mb-3">
-            {{ form.username.label }}
-            {{ form.username(class="form-control") }}
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="border rounded p-4" style="width: 400px;">
+            <h1>Club-Management</h1>
+            <h2>Login</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.username.label }}
+                    {{ form.username(class="form-control") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.password.label }}
+                    {{ form.password(class="form-control") }}
+                </div>
+                <div>
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
         </div>
-
-        <div class="mb-3">
-            {{ form.password.label }}
-            {{ form.password(class="form-control") }}
-        </div>
-
-        <div>
-            {{ form.submit(class="btn btn-primary") }}
-        </div>
-    </form>
+    </div>
 {% endblock %}
