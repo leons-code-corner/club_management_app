@@ -60,3 +60,15 @@ def edit_member(id):
     
     return render_template('edit_member.html', form=form, member=member)
 
+@main.route('/delete_member/<int:id>', methods=['POST'])
+def delete_member(id):
+    member = Member.query.get_or_404(id)  # Get the member or return 404 if not found
+
+    # Delete the member from the database
+    db.session.delete(member)
+    db.session.commit()
+
+    # Flash a success message
+    flash(f"Member {member.name} has been deleted.", "success")
+
+    return redirect(url_for('main.members'))

@@ -26,6 +26,11 @@
                     <td>{{ member.join_date.strftime('%Y-%m-%d') }}</td>
                     <td>
                         <a href="{{ url_for('main.edit_member', id=member.id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                        <!-- Button to delete a member with confirmation pop up -->
+                        <form method="POST" action="{{ url_for('main.delete_member', id=member.id) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this member?');">Delete</button>
+                        </form>
                     </td>
                 </tr>
             {% else %}
