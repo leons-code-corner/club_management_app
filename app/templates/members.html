@@ -13,8 +13,11 @@
         </div>
     </form>
 
+    <!-- Add member button -->
+    <a href="{{ url_for('main.add_member') }}" class="btn btn-primary mb-4">Add Member</a>
+    
     <!-- Export to CSV button -->
-    <a href="{{ url_for('main.export_members') }}" class="btn btn-success mb-4">Export to CSV</a>
+    <a href="{{ url_for('main.export_members') }}" class="btn btn-success mb-4" style="position: absolute; right: 20px;">Export to CSV</a>
 
     <table class="table table-striped">
         <thead>
