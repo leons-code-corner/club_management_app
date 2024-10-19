@@ -56,7 +56,7 @@ def edit_member(id):
 
         # Flash a success message
         flash(f"Member {member.name} updated successfully!", "success")
-        return redirect(url_for('main.members'))
+        return redirect(url_for('main.edit_member', id=member.id))
     
     return render_template('edit_member.html', form=form, member=member)
 

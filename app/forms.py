@@ -8,4 +8,4 @@ class MemberForm(FlaskForm):
     phone = StringField('Phone', validators=[Optional()])
     address = StringField('Address', validators=[Optional()])
     join_date = DateField('Join Date', format='%Y-%m-%d', validators=[DataRequired()])
-    submit = SubmitField('Add Member')
+    submit = SubmitField('Save')
