@@ -12,17 +12,20 @@ def index():
 @main.route('/members', methods=['GET', 'POST'])
 def members():
     search_query = request.args.get('search', '')  # Get search query from URL
+    page = request.args.get('page', 1, type=int)  # Get page number from URL
     if search_query:
         # Filter members by name or email if there's a search query
         members = Member.query.filter(
             (Member.name.ilike(f'%{search_query}%')) |
             (Member.email.ilike(f'%{search_query}%'))
-        ).all()
+        )
     else:
         # If no search query, return all members
-        members = Member.query.all()
+        members = Member.query
+    
+    pagination = members.paginate(page=page, per_page=10)
 
-    return render_template('members.html', members=members, search_query=search_query)
+    return render_template('members.html', members=pagination.items, search_query=search_query, pagination=pagination)
 
 
 @main.route('/add_member', methods=['GET', 'POST'])
