@@ -27,7 +27,9 @@ def members():
         members = Member.query
 
     # Handle sorting logic
-    if sort_by == 'name':
+    if sort_by == 'id':
+        members = members.order_by(Member.id.asc() if sort_order == 'asc' else Member.id.desc())
+    elif sort_by == 'name':
         members = members.order_by(Member.name.asc() if sort_order == 'asc' else Member.name.desc())
     elif sort_by == 'email':
         members = members.order_by(Member.email.asc() if sort_order == 'asc' else Member.email.desc())
