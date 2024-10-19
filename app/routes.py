@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, Response
 from .forms import MemberForm
 from .models import db, Member, Membership, MembershipType
 from datetime import datetime, timedelta
+import csv, io
 
 main = Blueprint('main', __name__)
 
@@ -98,3 +99,28 @@ def delete_member(id):
     flash(f"Member {member.name} has been deleted.", "success")
 
     return redirect(url_for('main.members'))
+
+@main.route('/export_members')
+def export_members():
+    # Fetch all members from the database
+    members = Member.query.all()
+
+    # Create the CSV response
+    def generate():
+        # Create the CSV writer
+        data = io.StringIO()
+        csv_writer = csv.writer(data)
+
+        # Write the header row
+        csv_writer.writerow(['ID', 'Name', 'Email', 'Phone', 'Address', 'Join Date'])
+
+        # Write member data rows
+        for member in members:
+            csv_writer.writerow([member.id, member.name, member.email, member.phone, member.address, member.join_date.strftime('%Y-%m-%d')])
+        
+        data.seek(0)
+        return data.getvalue()
+
+    response = Response(generate(), mimetype='text/csv')
+    response.headers.set('Content-Disposition', 'attachment', filename='members.csv')
+    return response
