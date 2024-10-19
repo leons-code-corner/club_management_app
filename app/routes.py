@@ -13,6 +13,9 @@ def index():
 def members():
     search_query = request.args.get('search', '')  # Get search query from URL
     page = request.args.get('page', 1, type=int)  # Get page number from URL
+    sort_by = request.args.get('sort_by', 'id')  # Field to sort by (default is 'id‚')
+    sort_order = request.args.get('sort_order', 'asc')  # Sort order (default is ascending)
+
     if search_query:
         # Filter members by name or email if there's a search query
         members = Member.query.filter(
@@ -22,10 +25,19 @@ def members():
     else:
         # If no search query, return all members
         members = Member.query
+
+    # Handle sorting logic
+    if sort_by == 'name':
+        members = members.order_by(Member.name.asc() if sort_order == 'asc' else Member.name.desc())
+    elif sort_by == 'email':
+        members = members.order_by(Member.email.asc() if sort_order == 'asc' else Member.email.desc())
+    elif sort_by == 'join_date':
+        members = members.order_by(Member.join_date.asc() if sort_order == 'asc' else Member.join_date.desc())
+
     
     pagination = members.paginate(page=page, per_page=10)
 
-    return render_template('members.html', members=pagination.items, search_query=search_query, pagination=pagination)
+    return render_template('members.html', members=pagination.items, search_query=search_query, pagination=pagination, sort_by=sort_by, sort_order=sort_order)
 
 
 @main.route('/add_member', methods=['GET', 'POST'])
