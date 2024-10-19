@@ -1,0 +1,45 @@
+
+
+<!-- ähnlich zu add_member, fügt aber die daten des members automatisch ein -->
+{% extends "base.html" %}
+
+{% block title %}Edit Member{% endblock %}
+
+{% block content %}
+    <h1>Edit Member {{ member.name }}</h1>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div class="mb-3">
+            {{ form.name.label }}<br>
+            {{ form.name(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.email.label }}<br>
+            {{ form.email(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.phone.label }}<br>
+            {{ form.phone(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.address.label }}<br>
+            {{ form.address(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.join_date.label }}<br>
+            {{ form.join_date(class="form-control") }}
+        </div>
+
+        <div>
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
+    <a href="{{ url_for('main.members') }}" class="btn btn-secondary mt-3">Back to Members List</a>
+{% endblock %}

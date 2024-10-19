@@ -24,6 +24,9 @@
                     <td>{{ member.phone }}</td>
                     <td>{{ member.address }}</td>
                     <td>{{ member.join_date.strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        <a href="{{ url_for('main.edit_member', id=member.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>

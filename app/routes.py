@@ -37,3 +37,26 @@ def add_member():
         return redirect(url_for('main.add_member'))
     
     return render_template('add_member.html', form=form)
+
+@main.route('/edit_member/<int:id>', methods=['GET', 'POST'])
+def edit_member(id):
+    member = Member.query.get_or_404(id)  # Get the member or return 404 if not found
+    form = MemberForm(obj=member)  # Pre-fill the form with the member's data
+
+    if form.validate_on_submit():
+        # Update member details with form data
+        member.name = form.name.data
+        member.email = form.email.data
+        member.phone = form.phone.data
+        member.address = form.address.data
+        member.join_date = form.join_date.data
+        
+        # Commit the changes to the database
+        db.session.commit()
+
+        # Flash a success message
+        flash(f"Member {member.name} updated successfully!", "success")
+        return redirect(url_for('main.members'))
+    
+    return render_template('edit_member.html', form=form, member=member)
+
