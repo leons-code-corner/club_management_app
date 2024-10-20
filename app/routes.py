@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, Response
 from flask_login import login_user, logout_user, login_required
-from .forms import MemberForm, LoginForm
+from .forms import MemberForm, LoginForm, MembershipTypeForm, MembershipForm
 from .models import db, Member,User, Membership, MembershipType
 from .decorators import role_required
 from datetime import datetime, timedelta
@@ -165,3 +165,89 @@ def logout():
 @main.errorhandler(403)
 def forbidden_error(error):
     return render_template('403.html'), 403
+
+@main.route('/member/<int:id>', methods=['GET'])
+@login_required
+@role_required('admin')
+def member_profile(id):
+    member = Member.query.get_or_404(id)
+    memberships = Membership.query.filter_by(fk_member=member.id).all()
+    return render_template('member_profile.html', member=member, memberships=memberships)
+
+@main.route('/assign_membership/<int:id>', methods=['GET', 'POST'])
+@login_required
+@role_required('admin')  # Only admins can assign memberships
+def assign_membership(id):
+    member = Member.query.get_or_404(id)
+    form = MembershipForm()
+
+    # Populate the membership type dropdown
+    form.membership_type.choices = [(m.id, m.name) for m in MembershipType.query.all()]
+
+    if form.validate_on_submit():
+        # Create a new membership
+        new_membership = Membership(
+            fk_member=member.id,
+            fk_membership_type=form.membership_type.data,
+            membership_start=form.membership_start.data,
+            membership_end=form.membership_end.data
+        )
+        db.session.add(new_membership)
+        db.session.commit()
+
+        flash(f"Membership for {member.name} assigned successfully!", 'success')
+        return redirect(url_for('main.member_profile', id=member.id))
+
+    return render_template('assign_membership.html', form=form, member=member)
+
+@main.route('/membership_types', methods=['GET'])
+@login_required
+@role_required('admin')
+def membership_types():
+    membership_types = MembershipType.query.all()
+    return render_template('membership_types.html', membership_types=membership_types)
+
+@main.route('/create_membership_type', methods=['GET', 'POST'])
+@login_required
+@role_required('admin')
+def create_membership_type():
+    form = MembershipTypeForm()
+    if form.validate_on_submit():
+        new_type = MembershipType(
+            name=form.name.data,
+            term_value=form.term_value.data,
+            term_interval=form.term_interval.data,
+            extension_value=form.extension_value.data,
+            extension_interval=form.extension_interval.data,
+            price=form.price.data,
+            price_interval=form.price_interval.data
+        )
+        db.session.add(new_type)
+        db.session.commit()
+
+        flash('New membership type created successfully!', 'success')
+        return redirect(url_for('main.membership_types'))
+
+    return render_template('create_membership_type.html', form=form)
+
+@main.route('/edit_membership_type/<int:id>', methods=['GET', 'POST'])
+@login_required
+@role_required('admin')
+def edit_membership_type(id):
+    membership_type = MembershipType.query.get_or_404(id)
+    form = MembershipTypeForm(obj=membership_type)
+
+    if form.validate_on_submit():
+        membership_type.name = form.name.data
+        membership_type.term_value = form.term_value.data
+        membership_type.term_interval = form.term_interval.data
+        membership_type.extension_value = form.extension_value.data
+        membership_type.extension_interval = form.extension_interval.data
+        membership_type.price = form.price.data
+        membership_type.price_interval = form.price_interval.data
+
+        db.session.commit()
+        flash('Membership type updated successfully!', 'success')
+        return redirect(url_for('main.membership_types'))
+
+    return render_template('edit_membership_type.html', form=form)

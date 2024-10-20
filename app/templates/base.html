@@ -67,6 +67,9 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/members' %}active{% endif %}" href="{{ url_for('main.members') }}">Members</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/membership_types' %}active{% endif %}" href="{{ url_for('main.membership_types') }}">Membership Types</a>
+                    </li>
                 {% endif %}
             {% endif %}
             <li class="nav-item">

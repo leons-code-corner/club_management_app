@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Membership Types{% endblock %}
+
+{% block content %}
+    <h1>Membership Types</h1>
+    <a href="{{ url_for('main.create_membership_type') }}" class="btn btn-primary mb-3">Create New Membership Type</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Term</th>
+                <th>Extension</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for membership_type in membership_types %}
+                <tr>
+                    <td>{{ membership_type.name }}</td>
+                    <td>{{ membership_type.term_value }} {{ membership_type.term_interval }}</td>
+                    <td>{{ membership_type.extension_value }} {{ membership_type.extension_interval }}</td>
+                    <td>${{ membership_type.price }} per {{ membership_type.price_interval }}</td>
+                    <td>
+                        <a href="{{ url_for('main.edit_membership_type', id=membership_type.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No membership types found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

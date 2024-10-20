@@ -44,6 +44,9 @@ class MembershipType(db.Model):
     price = db.Column(db.Float, nullable=False)
     price_interval = db.Column(db.String(10), nullable=False)
 
+    # Relationships
+    memberships = db.relationship('Membership', backref='membership_type', lazy=True)
+
     def __repr__(self):
         return f'<MembershipType {self.name}>'
     

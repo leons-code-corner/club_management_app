@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Assign Membership{% endblock %}
+
+{% block content %}
+    <h1>Assign Membership to {{ member.name }}</h1>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.membership_type.label }}
+            {{ form.membership_type(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.membership_start.label }}
+            {{ form.membership_start(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.membership_end.label }}
+            {{ form.membership_end(class="form-control") }}
+        </div>
+
+        <div>
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
+    <a href="{{ url_for('main.member_profile', id=member.id) }}" class="btn btn-secondary mt-3">Back to Profile</a>
+{% endblock %}

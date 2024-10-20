@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Create Membership Type{% endblock %}
+
+{% block content %}
+    <h1>Create New Membership Type</h1>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.name.label }}
+            {{ form.name(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.term_value.label }}
+            {{ form.term_value(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.term_interval.label }}
+            {{ form.term_interval(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.extension_value.label }}
+            {{ form.extension_value(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.extension_interval.label }}
+            {{ form.extension_interval(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.price.label }}
+            {{ form.price(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.price_interval.label }}
+            {{ form.price_interval(class="form-control") }}
+        </div>
+
+        <div>
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
+    <a href="{{ url_for('main.membership_types') }}" class="btn btn-secondary mt-3">Back to Membership Types</a>
+{% endblock %}
