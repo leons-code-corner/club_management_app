@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_user, logout_user, login_required
 from .forms import MemberForm, LoginForm
 from .models import db, Member,User, Membership, MembershipType
+from .decorators import role_required
 from datetime import datetime, timedelta
 import csv, io
 
@@ -14,6 +15,7 @@ def index():
 
 @main.route('/members', methods=['GET', 'POST'])
 @login_required
+@role_required('admin')
 def members():
     search_query = request.args.get('search', '')  # Get search query from URL
     page = request.args.get('page', 1, type=int)  # Get page number from URL
@@ -48,6 +50,7 @@ def members():
 
 @main.route('/add_member', methods=['GET', 'POST'])
 @login_required
+@role_required('admin')
 def add_member():
     form = MemberForm()
     if form.validate_on_submit():
@@ -71,6 +74,7 @@ def add_member():
 
 @main.route('/edit_member/<int:id>', methods=['GET', 'POST'])
 @login_required
+@role_required('admin')
 def edit_member(id):
     member = Member.query.get_or_404(id)  # Get the member or return 404 if not found
     form = MemberForm(obj=member)  # Pre-fill the form with the member's data
@@ -94,6 +98,7 @@ def edit_member(id):
 
 @main.route('/delete_member/<int:id>', methods=['POST'])
 @login_required
+@role_required('admin')
 def delete_member(id):
     member = Member.query.get_or_404(id)  # Get the member or return 404 if not found
 
@@ -108,6 +113,7 @@ def delete_member(id):
 
 @main.route('/export_members')
 @login_required
+@role_required('admin')
 def export_members():
     # Fetch all members from the database
     members = Member.query.all()
@@ -155,3 +161,7 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('main.login'))
+
+@main.errorhandler(403)
+def forbidden_error(error):
+    return render_template('403.html'), 403
