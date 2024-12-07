@@ -271,8 +271,12 @@ def edit_membership_type(id):
 @role_required('admin')
 def delete_membership_type(id):
     membership_type = MembershipType.query.get_or_404(id)
+    if membership_type.memberships:
+        flash('Membership type has active memberships and cannot be deleted.', 'danger')
+        return redirect(url_for('main.edit_membership_type', id=id))
     db.session.delete(membership_type)
     db.session.commit()
 
     flash('Membership type deleted successfully!', 'success')
+
     return redirect(url_for('main.membership_types'))

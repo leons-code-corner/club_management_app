@@ -3,6 +3,15 @@
 {% block title %}Edit Membership Type{% endblock %}
 
 {% block content %}
+    {% with flashes = get_flashed_messages() %}
+        {% if flashes %}
+            <div class="alert alert-info">
+                <ul>
+                    <li>{{ flashes[-1] }}</li>
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
     <h1>Edit Membership Type</h1>
 
     <form method="POST">
@@ -43,14 +52,15 @@
             {{ form.price_interval(class="form-control") }}
         </div>
 
-        <div>
-            {{ form.submit(class="btn btn-primary") }}
-        </div>
+        
     </form>
 
+    <!-- Save button -->
+    <button type="submit" class="btn btn-primary mt-3">Save changes</button> 
     <!-- Delete button -->
-    <form method="POST" action="{{ url_for('main.delete_membership_type', id=membership_type.id) }}" style="display:inline;"></form>
+    <form method="POST" action="{{ url_for('main.delete_membership_type', id=membership_type.id) }}" style="display:inline;">
         <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Are you sure you want to delete this membership type?');">Delete</button>
-    ≤!-- Back button -->
-    <a href="{{ url_for('main.membership_types') }}" class="btn btn-secondary mt-3">Back to Membership Types</a>
+    </form>
+    <!-- Back button -->
+    <a href="{{ url_for('main.membership_types') }}" class="btn btn-secondary mt-3">Back to Membership Types</a> 
 {% endblock %}
