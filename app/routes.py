@@ -220,6 +220,7 @@ def membership_types():
     membership_types = MembershipType.query.all()
     return render_template('membership_types.html', membership_types=membership_types)
 
+
 @main.route('/create_membership_type', methods=['GET', 'POST'])
 @login_required
 @role_required('admin')
@@ -263,4 +264,15 @@ def edit_membership_type(id):
         flash('Membership type updated successfully!', 'success')
         return redirect(url_for('main.membership_types'))
 
-    return render_template('edit_membership_type.html', form=form)
+    return render_template('edit_membership_type.html', form=form, membership_type=membership_type)
+
+@main.route('/delete_membership_type/<int:id>', methods=['POST'])
+@login_required
+@role_required('admin')
+def delete_membership_type(id):
+    membership_type = MembershipType.query.get_or_404(id)
+    db.session.delete(membership_type)
+    db.session.commit()
+
+    flash('Membership type deleted successfully!', 'success')
+    return redirect(url_for('main.membership_types'))
