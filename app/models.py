@@ -15,7 +15,7 @@ class Member(db.Model, UserMixin):
     # Relationships
     notes = db.relationship('Note', backref='member', lazy=True)
     files = db.relationship('File', backref='member', lazy=True)
-    membership = db.relationship('Membership', backref='member', lazy=True)
+    membership = db.relationship('Membership', backref='member',cascade = 'all, delete-orphan',lazy=True)
     
 
     def __repr__(self):
@@ -28,7 +28,7 @@ class Membership(db.Model):
 
     # Relationships
     fk_member = db.Column(db.Integer, db.ForeignKey('member.id'), nullable=False)
-    fk_membership_type = db.Column(db.Integer, db.ForeignKey('membership_type.id'), nullable=False)
+    fk_membership_type = db.Column(db.Integer, db.ForeignKey('membership_type.id',ondelete = 'CASCADE'), nullable=False)
 
     def __repr__(self):
         return f'<Membership {self.id}>'
