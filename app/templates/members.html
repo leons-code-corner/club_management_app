@@ -3,6 +3,15 @@
 {% block title %}Members List{% endblock %}
 
 {% block content %}
+    {% with flashes = get_flashed_messages() %}
+        {% if flashes %}
+            <div class="alert alert-info">
+                <ul>
+                    <li>{{ flashes[-1] }}</li>
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
     <h1>Club Members</h1>
 
     <!-- Search and filter form -->

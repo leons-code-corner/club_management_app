@@ -213,6 +213,28 @@ def assign_membership(id):
 
     return render_template('assign_membership.html', form=form, member=member)
 
+@main.route('/edit_membership/<int:id>', methods=['GET', 'POST'])
+@login_required
+@role_required('admin')
+def edit_membership(id,):
+    membership = Membership.query.get_or_404(id)
+    member = Member.query.get_or_404(membership.fk_member)
+    form = MembershipForm(obj=membership)
+
+    # Populate the membership type dropdown
+    form.membership_type.choices = [(m.id, m.name) for m in MembershipType.query.all()]
+
+    if form.validate_on_submit():
+        membership.fk_membership_type = form.membership_type.data
+        membership.membership_start = form.membership_start.data
+        membership.membership_end = form.membership_end.data
+
+        db.session.commit()
+        flash('Membership updated successfully!', 'success')
+        return redirect(url_for('main.member_profile', id=membership.fk_member))
+
+    return render_template('assign_membership.html',member = member, form=form, membership=membership)
+
 @main.route('/membership_types', methods=['GET'])
 @login_required
 @role_required('admin')

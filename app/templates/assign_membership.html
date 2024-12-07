@@ -3,7 +3,7 @@
 {% block title %}Assign Membership{% endblock %}
 
 {% block content %}
-    <h1>Assign Membership to {{ member.name }}</h1>
+    <h1>Membership of {{ member.name }}</h1>
 
     <form method="POST">
         {{ form.hidden_tag() }}
@@ -23,10 +23,9 @@
             {{ form.membership_end(class="form-control") }}
         </div>
 
-        <div>
-            {{ form.submit(class="btn btn-primary") }}
-        </div>
+        
     </form>
 
+    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
     <a href="{{ url_for('main.member_profile', id=member.id) }}" class="btn btn-secondary mt-3">Back to Profile</a>
 {% endblock %}
