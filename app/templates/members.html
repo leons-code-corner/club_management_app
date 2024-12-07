@@ -5,11 +5,25 @@
 {% block content %}
     <h1>Club Members</h1>
 
-    <!-- Search form -->
+    <!-- Search and filter form -->
     <form class="mb-4" method="GET" action="{{ url_for('main.members') }}">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search members..." value="{{ search_query }}">
-            <button class="btn btn-primary" type="submit">Search</button>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search members..." value="{{ search_query }}">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <!-- Membership type filter form -->
+                <form method="POST" action="{{ url_for('main.members') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="input-group">
+                        {{ form.membership_type(class="form-select", value=selected_type_id) }}  <!-- Retain selected value -->
+                        <button type="submit" class="btn btn-secondary">Filter</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </form>
 

@@ -28,5 +28,9 @@ class MembershipTypeForm(FlaskForm):
 class MembershipForm(FlaskForm):
     membership_type = SelectField('Membership Type', coerce=int, validators=[DataRequired()])
     membership_start = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired()])
-    membership_end = DateField('End Date', format='%Y-%m-%d', validators=[DataRequired()])
+    membership_end = DateField('End Date', format='%Y-%m-%d', validators = [Optional()])
     submit = SubmitField('Assign Membership')
+
+class MemberFilterForm(FlaskForm):
+    membership_type = SelectField('Membership Type', coerce=int, choices=[], default=0)
+    submit = SubmitField('Filter')

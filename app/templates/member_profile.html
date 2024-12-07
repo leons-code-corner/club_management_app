@@ -23,7 +23,11 @@
                 <tr>
                     <td>{{ membership.membership_type.name }}</td>
                     <td>{{ membership.membership_start.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ membership.membership_end.strftime('%Y-%m-%d') }}</td>
+                    {% if membership.membership_end %}
+                        <td>{{ membership.membership_end.strftime('%Y-%m-%d') }}</td>
+                    {% else %}
+                        <td>Not ended</td>
+                    {% endif %}
                 </tr>
             {% else %}
                 <tr>

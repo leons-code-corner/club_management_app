@@ -24,7 +24,7 @@ class Member(db.Model, UserMixin):
 class Membership(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     membership_start = db.Column(db.DateTime, nullable=False)
-    membership_end = db.Column(db.DateTime, nullable=False)
+    membership_end = db.Column(db.DateTime, nullable=True)
 
     # Relationships
     fk_member = db.Column(db.Integer, db.ForeignKey('member.id'), nullable=False)

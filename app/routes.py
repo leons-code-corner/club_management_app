@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, Response
 from flask_login import login_user, logout_user, login_required
-from .forms import MemberForm, LoginForm, MembershipTypeForm, MembershipForm
+from .forms import MemberForm, LoginForm, MembershipTypeForm, MembershipForm, MemberFilterForm
 from .models import db, Member,User, Membership, MembershipType
 from .decorators import role_required
 from datetime import datetime, timedelta
@@ -17,10 +17,25 @@ def index():
 @login_required
 @role_required('admin')
 def members():
+    form = MemberFilterForm()
+
+    # Populate membership type choices (add "All" as default)
+    form.membership_type.choices = [(0, 'All Membership Types')] + [(m.id, m.name) for m in MembershipType.query.all()]
+
     search_query = request.args.get('search', '')  # Get search query from URL
     page = request.args.get('page', 1, type=int)  # Get page number from URL
     sort_by = request.args.get('sort_by', 'id')  # Field to sort by (default is 'id‚')
     sort_order = request.args.get('sort_order', 'asc')  # Sort order (default is ascending)
+
+    # Base query for members
+    members = Member.query
+
+    # If a membership type is selected for filtering
+    if form.validate_on_submit() and form.membership_type.data != 0:
+        selected_type_id = form.membership_type.data
+        # Join with memberships and filter by the selected type
+        members= members.join(Membership).filter(Membership.fk_membership_type == selected_type_id)
+
 
     if search_query:
         # Filter members by name or email if there's a search query
@@ -28,9 +43,6 @@ def members():
             (Member.name.ilike(f'%{search_query}%')) |
             (Member.email.ilike(f'%{search_query}%'))
         )
-    else:
-        # If no search query, return all members
-        members = Member.query
 
     # Handle sorting logic
     if sort_by == 'id':
@@ -45,7 +57,8 @@ def members():
     
     pagination = members.paginate(page=page, per_page=10)
 
-    return render_template('members.html', members=pagination.items, search_query=search_query, pagination=pagination, sort_by=sort_by, sort_order=sort_order)
+    return render_template('members.html', members=pagination.items, search_query=search_query, pagination=pagination, 
+                           sort_by=sort_by, sort_order=sort_order, form=form)
 
 
 @main.route('/add_member', methods=['GET', 'POST'])
