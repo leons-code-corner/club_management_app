@@ -1,6 +1,7 @@
 # Ignore Python cache and venv
 __pycache__/
 venv/
+.venv/
 *.pyc
 
 # Ignore SQLite database file
