@@ -11,12 +11,12 @@ def seed_database():
         admin = User(
             username='admin',  
             password_hash=generate_password_hash('admin123'),
-            is_admin=True
+            role='admin'
         )
         user = User(
             username='user', 
             password_hash=generate_password_hash('user123'),
-            is_admin=False
+            role='user'
         )
         
         # Vertragsarten erstellen
