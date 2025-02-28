@@ -30,7 +30,7 @@ def seed_database():
         members = [
             Member(id = 1, name='Max Mustermann', email='max@example.com',phone = 123456, join_date = '2021-01-01'),
             Member(id = 2, name='Erika Musterfrau', email='erika@example.com',phone = 234567, join_date = '2022-01-01'),
-            Member(id = 3, name='Hans Beispiel', email='hans@example.com', phone = 345678 join_date = '2020-01-01')
+            Member(id = 3, name='Hans Beispiel', email='hans@example.com', phone = 345678, join_date = '2020-01-01')
         ]
 
         # Beispiel-Mitgliedschaften erstellen
