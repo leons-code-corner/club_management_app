@@ -24,7 +24,10 @@
 │       ├── login.html
 │       ├── member_profile.html
 │       ├── members.html
-│       └── membership_types.html
+│       ├── membership_types.html
+│       └── profile.html
+├── erd.md
+├── init_example_data.py
 ├── instance
 │   └── club.db
 ├── migrations
@@ -33,17 +36,9 @@
 │   │   └── env.cpython-311.pyc
 │   ├── alembic.ini
 │   ├── env.py
-│   ├── script.py.mako
-│   └── versions
-│       ├── 69fa36be3a32_add_user_model.py
-│       ├── __pycache__
-│       │   ├── 69fa36be3a32_add_user_model.cpython-311.pyc
-│       │   ├── b0281eeff28f_inital_migration.cpython-311.pyc
-│       │   └── f1350f85f845_nullable_end_of_membership.cpython-311.pyc
-│       ├── b0281eeff28f_inital_migration.py
-│       └── f1350f85f845_nullable_end_of_membership.py
+│   └── script.py.mako
 ├── requirements.txt
 ├── run.py
 └── structure.txt
 
-9 directories, 38 files
+7 directories, 35 files
