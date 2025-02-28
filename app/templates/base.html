@@ -59,22 +59,27 @@
     {% block sidebar %}
     <nav class="sidebar navbar-light">
         <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('main.index') }}">Home</a>
-            </li>
             {% if current_user.is_authenticated %}
-                {% if current_user.role == 'admin' %}        
+                {% if current_user.role == 'admin' %}   
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('main.index') }}">Home</a>  
+                    </li>   
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/members' %}active{% endif %}" href="{{ url_for('main.members') }}">Members</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/membership_types' %}active{% endif %}" href="{{ url_for('main.membership_types') }}">Membership Types</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Statistics</a>
+                    </li>
+                {% endif %}
+                {% if current_user.role == 'user' %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('main.profile') }}">My Profile</a>
+                    </li>
                 {% endif %}
             {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="#">Statistics</a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link text-muted" href="{{ url_for('main.logout') }}" style="position: fixed; bottom: 20px; width: 250px;">
                     <i class="bi bi-box-arrow-right"></i> Logout

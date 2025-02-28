@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, Response
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from .forms import MemberForm, LoginForm, MembershipTypeForm, MembershipForm, MemberFilterForm
 from .models import db, Member,User, Membership, MembershipType
 from .decorators import role_required
@@ -10,6 +10,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 @login_required
+@role_required('admin')
 def index():
     return render_template('index.html')
 
@@ -161,6 +162,8 @@ def login():
             # Log in the user
             login_user(user)
             flash('Logged in successfully!', 'success')
+            if user.role == "user":
+                return redirect(url_for("main.profile"))
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.index'))
         else:
@@ -302,3 +305,22 @@ def delete_membership_type(id):
     flash('Membership type deleted successfully!', 'success')
 
     return redirect(url_for('main.membership_types'))
+
+
+@main.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    if not current_user.member:
+        return "Kein Mitglied zugewiesen", 403  # Falls kein Mitglied zugeordnet ist
+
+    member = current_user.member
+    memberships = Membership.query.filter_by(fk_member=member.id).all()
+
+    if request.method == "POST":
+        member.name = request.form["name"]
+        member.email = request.form["email"]
+        member.phone = request.form["phone"]
+        db.session.commit()
+        return redirect(url_for("user.profile"))
+
+    return render_template("profile.html", member=member, memberships=memberships)

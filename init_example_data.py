@@ -17,7 +17,8 @@ def seed_database():
         user = User(
             username='user', 
             password_hash=generate_password_hash('user123'),
-            role='user'
+            role='user',
+            member_id=1
         )
         
         # Vertragsarten erstellen
@@ -39,7 +40,7 @@ def seed_database():
             Membership(id = 1, membership_start = datetime(2021, 1, 1), fk_member = 1, fk_membership_type = 3),
             Membership(id = 2, membership_start = datetime(2022, 1, 1), fk_member = 2, fk_membership_type = 1),
             Membership(id = 3, membership_start = datetime(2020, 1, 1), fk_member = 3, membership_end = datetime(2022, 12, 31), fk_membership_type = 1),
-            Membership(id = 4, membership_start = datetime(2023, 1, 1), fk_member = 1, fk_membership_type = 2)
+            Membership(id = 4, membership_start = datetime(2023, 1, 1), fk_member = 3, fk_membership_type = 2)
         ]
         
         db.session.add(admin)

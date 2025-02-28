@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Member Profile{% endblock %}
+
+{% block content %}
+    <h1>Member: {{ member.name }}</h1>
+    <p>Email: {{ member.email }}</p>
+    <p>Phone: {{ member.phone }}</p>
+    <p>Address: {{ member.address }}</p>
+    <p>Join Date: {{ member.join_date.strftime('%Y-%m-%d') }}</p>
+
+    <h2>Membership History</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Membership Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for membership in memberships %}
+                <tr>
+                    <td>{{ membership.membership_type.name }}</td>
+                    <td>{{ membership.membership_start.strftime('%Y-%m-%d') }}</td>
+                    {% if membership.membership_end %}
+                        <td>{{ membership.membership_end.strftime('%Y-%m-%d') }}</td>
+                    {% else %}
+                        <td>Ungekündigt</td>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">No memberships found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
