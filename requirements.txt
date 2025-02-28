@@ -3,7 +3,6 @@ blinker==1.8.2
 click==8.1.7
 dnspython==2.7.0
 email_validator==2.2.0
-eralchemy2==1.4.1
 Flask==3.0.3
 Flask-Login==0.6.3
 Flask-Migrate==4.0.7
