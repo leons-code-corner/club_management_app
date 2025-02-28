@@ -22,9 +22,9 @@ def seed_database():
         
         # Vertragsarten erstellen
         membership_types= [
-            MembershipType(name='Aktive Mitgliedschaft'),
-            MembershipType(name='Passive Mitgliedschaft'),
-            MembershipType(name='Ermäßigte Mitgliedschaft')
+            MembershipType(name='Aktive Mitgliedschaft', term_value=1, term_interval='year', extension_value=1, extension_interval='year', price=240, price_interval='year'),
+            MembershipType(name='Passive Mitgliedschaft', term_value=1, term_interval='year', extension_value=1, extension_interval='year', price=120, price_interval='year'),
+            MembershipType(name='Ermäßigte Mitgliedschaft', term_value=1, term_interval='year', extension_value=1, extension_interval='year', price=180, price_interval='year')
         ]
         
         # Beispiel-Mitglieder erstellen
