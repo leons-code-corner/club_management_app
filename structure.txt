@@ -1,0 +1,49 @@
+.
+├── README.md
+├── app
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── decorators.cpython-311.pyc
+│   │   ├── forms.cpython-311.pyc
+│   │   ├── models.cpython-311.pyc
+│   │   └── routes.cpython-311.pyc
+│   ├── decorators.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── routes.py
+│   └── templates
+│       ├── 403.html
+│       ├── add_member.html
+│       ├── assign_membership.html
+│       ├── base.html
+│       ├── create_membership_type.html
+│       ├── edit_member.html
+│       ├── edit_membership_type.html
+│       ├── index.html
+│       ├── login.html
+│       ├── member_profile.html
+│       ├── members.html
+│       └── membership_types.html
+├── instance
+│   └── club.db
+├── migrations
+│   ├── README
+│   ├── __pycache__
+│   │   └── env.cpython-311.pyc
+│   ├── alembic.ini
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions
+│       ├── 69fa36be3a32_add_user_model.py
+│       ├── __pycache__
+│       │   ├── 69fa36be3a32_add_user_model.cpython-311.pyc
+│       │   ├── b0281eeff28f_inital_migration.cpython-311.pyc
+│       │   └── f1350f85f845_nullable_end_of_membership.cpython-311.pyc
+│       ├── b0281eeff28f_inital_migration.py
+│       └── f1350f85f845_nullable_end_of_membership.py
+├── requirements.txt
+├── run.py
+└── structure.txt
+
+9 directories, 38 files

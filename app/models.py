@@ -47,6 +47,26 @@ class MembershipType(db.Model):
     # Relationships
     memberships = db.relationship('Membership', backref='membership_type', lazy=True)
 
+    @staticmethod
+    def edit(id):
+        membership_type = MembershipType.query.get_or_404(id)
+        form = MembershipTypeForm(obj=membership_type)
+
+        if form.validate_on_submit():
+            membership_type.name = form.name.data
+            membership_type.term_value = form.term_value.data
+            membership_type.term_interval = form.term_interval.data
+            membership_type.extension_value = form.extension_value.data
+            membership_type.extension_interval = form.extension_interval.data
+            membership_type.price = form.price.data
+            membership_type.price_interval = form.price_interval.data
+
+            db.session.commit()
+            flash('Membership type updated successfully!', 'success')
+            return redirect(url_for('main.membership_types'))
+
+        return render_template('edit_membership_type.html', form=form, membership_type=membership_type)
+
     def __repr__(self):
         return f'<MembershipType {self.name}>'
     
